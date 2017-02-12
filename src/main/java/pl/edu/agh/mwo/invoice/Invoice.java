@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
+	
+	
+	
 	public void addProduct(Product product) {
 		// TODO: implement
 	}
@@ -13,7 +16,7 @@ public class Invoice {
 		// TODO: implement
 	}
 
-	public BigDecimal getSubtotal() {
+	public BigDecimal getNetTotal() {
 		return null;
 	}
 
@@ -21,7 +24,7 @@ public class Invoice {
 		return null;
 	}
 
-	public BigDecimal getTotal() {
+	public BigDecimal getGrossTotal() {
 		return null;
 	}
 }
