@@ -13,6 +13,18 @@ public abstract class Product {
 		this.name = name;
 		this.price = price;
 		this.taxPercent = tax;
+		
+		if(name == null || name == ""){
+			throw new IllegalArgumentException("Puste imie");
+		}
+		if(price == null){
+			throw new IllegalArgumentException("Brak ceny");
+		}
+		
+		if(price.compareTo(BigDecimal.ZERO)<0){
+			throw new IllegalArgumentException("Cena mniejsza od zera");
+		}
+	
 	}
 
 	public String getName() {
