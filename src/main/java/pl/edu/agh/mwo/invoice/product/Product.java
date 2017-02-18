@@ -19,7 +19,7 @@ public abstract class Product {
 		}
 		
 		if(price.compareTo(BigDecimal.ZERO)<0){
-			throw new IllegalArgumentException("Cena mniejsza od 0");
+			throw new IllegalArgumentException("Cena mniejsza ni¿ 0");
 		}
 		
 		this.name = name;
