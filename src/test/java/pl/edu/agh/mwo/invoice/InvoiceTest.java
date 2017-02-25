@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
+import org.hamcrest.Matchers;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import pl.edu.agh.mwo.invoice.Invoice;
@@ -17,6 +20,10 @@ public class InvoiceTest {
 	private static final String PRODUCT_2 = "Product 2";
 	private static final String PRODUCT_3 = "Product 3";
 
+	@Before
+//	public void resetNumber(){
+//		Invoice.resetNumber();
+//	}
 	@Test
 	public void testEmptyInvoiceHasEmptySubtotal() {
 		Invoice invoice = createEmptyInvoice();
@@ -99,6 +106,78 @@ public class InvoiceTest {
 		invoice.addProduct(createTaxFreeProduct(), -1);
 	}
 
+	@Test
+	public void testInvoiceHasNumberGreaterThanZero() {
+		Invoice invoice = createEmptyInvoice();
+		Assert.assertThat(invoice.getNumber(), Matchers.greaterThan(0));
+	}
+
+	@Test
+	public void testManyInvoicesHaveDifferentNumbers() {
+		Invoice invoice = createEmptyInvoice();
+		Invoice invoice2 = createEmptyInvoice();
+		Assert.assertNotEquals(invoice.getNumber(), invoice2.getNumber());
+	}
+
+	@Test
+	public void testNextInvoiceHasSubsequentNumber() {
+		Invoice invoice = createEmptyInvoice();
+		Invoice invoice2 = createEmptyInvoice();
+		Assert.assertEquals(1, invoice2.getNumber() - invoice.getNumber());
+	}
+
+	@Test
+	public void testPrintedInvoiceHasNumber() {
+		Invoice invoice = createEmptyInvoice();
+		String printed = invoice.printedVersion();
+		String invoiceNumber = String.valueOf(invoice.getNumber());
+		Assert.assertThat(printed, Matchers.containsString(invoiceNumber));
+	}
+
+	@Test
+	public void testPrintedInvoiceHasProductName() {
+		Invoice invoice = createEmptyInvoice();
+		Product product = new DairyProduct("mleko", new BigDecimal(20));
+		invoice.addProduct(product);
+
+		String printed = invoice.printedVersion();
+		String invoiceNumber = String.valueOf(invoice.getNumber());
+		Assert.assertThat(printed, Matchers.containsString("mleko"));
+	}
+	
+	@Test
+	public void testPrintedTypeIsOnPrintedVersion() {
+		Invoice invoice = createEmptyInvoice();
+		Product product = new DairyProduct("mleko", new BigDecimal(20));
+		invoice.addProduct(product);
+
+		String printed = invoice.printedVersion();
+		String invoiceNumber = String.valueOf(product.getClass().getSimpleName());
+		Assert.assertThat(printed, Matchers.containsString(product.getClass().getSimpleName()));
+	}
+	
+	@Test
+	public void testPrintedProductQuantityIsOnPrintedVersion() {
+		Invoice invoice = createEmptyInvoice();
+		Product product = new DairyProduct("mleko", new BigDecimal(20));
+		invoice.addProduct(product);
+
+		String printed = invoice.printedVersion();
+		String invoiceNumber = String.valueOf(invoice.getNumber());
+		Assert.assertThat(printed, Matchers.containsString("mleko"));
+	}
+	
+//	@Test
+//	public void testPrintedProductPriceIsOnPrintedVersion() {
+//		Invoice invoice = createEmptyInvoice();
+//		Product product = new DairyProduct("mleko", new BigDecimal(20));
+//		invoice.addProduct(product);
+//
+//		String printed = invoice.printedVersion();
+//		String invoiceNumber = String.valueOf(invoice.getNumber());
+//		Assert.assertThat(printed, Matchers.containsString("mleko"));
+//	}
+	
 	private Invoice createEmptyInvoice() {
 		return new Invoice();
 	}
